@@ -1,0 +1,54 @@
+<html> 
+<head>  
+	<script src = "ball.js"></script>
+	<script>
+		var _canvas;
+		var _hinhtron;
+		var _ball;
+		var _balls=[];
+		var _counter =0;
+		function draw(){
+			_hinhtron.clearRect(0,0,_canvas.width,_canvas.height);//
+			for(var i =0; i<_balls.length;i++)
+			{
+				_balls[i].draw(_hinhtron,(i+1)/10);
+			}
+			_ball.draw(_hinhtron);
+		}
+		/*********************/
+		function traceBall(ball){
+			var b = new Ball;
+			b.vitriX = ball.vitriX;//lấy tọa độ x của quả bóng ban đầu
+			b.vitriY = ball.vitriY;//tương tự lấy tọa độ y
+			
+			_balls.push(b);//Đặt quả bóng mới được tạo ra từ quả bóng cũ vào mảng _balls
+			if(_balls.length>10)//Xóa phần tử đầu tiên của mạng _balls để thêm phần tử mới vào
+				_balls.splice(0,1);
+		}
+		function update(){
+			_counter++;
+			if(_counter==5)
+			{
+				traceBall(_ball);
+				_counter=0;
+			}
+			_ball.move();
+			_ball.checkCollision();
+			draw();
+		}
+		window.onload = function(){
+			
+			_canvas = document.getElementById("canvas");
+			_hinhtron = _canvas.getContext("2d");
+			_ball = new Ball(_canvas.width,_canvas.height);
+			
+			setInterval(function(){
+			update();
+			},10);
+		}
+	</script>
+</head> 
+<body>
+	<canvas id="canvas" width="400px" height="300px" style="border: 1px solid gray;"></canvas>
+</body>
+</html>
